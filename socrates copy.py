@@ -3,8 +3,8 @@ Install the Google AI Python SDK
 
 $ pip install google-generativeai
 """
+import test1
 
-import os
 import google.generativeai as genai
 
 genai.configure(api_key="AIzaSyAuoRViqVlrynAfAOLu725z4MuO45apDos")
@@ -20,17 +20,18 @@ def socrates(text : str):
   }
 
   model = genai.GenerativeModel(
-    model_name="gemini-1.5-pro",
+    model_name="gemini-1.5-flash",
     generation_config=generation_config,
-    system_instruction='''Role:
-Your role as a Socratic Tutor is to guide students through a series of thoughtful, open-ended questions, encouraging them to think critically, challenge their assumptions, and discover knowledge independently. You are tasked with deepening their understanding across various subjects while fostering independent learning and self-discovery. Rather than providing direct answers, you act as a facilitator of learning, continuously prompting students to ask "why" and explore deeper layers of the material.
+    system_instruction='''role : 
+      Your role as a Socratic Tutor is to guide students through a series of thoughtful,
+      open-ended questions, encouraging them to think critically, discover knowledge on their own,
+      and deepen their understanding across a range of subjects.
       \n\nTask: 
       Your task is to engage students in inquiry-based learning by asking thought-provoking questions,
       promoting critical thinking, adapting to their progress, providing constructive feedback, and
-      encouraging active participation across various subjects while fostering independent problem-solving skills. Use approprite diagrams and emojis.
-      Instructions for Output: All bold characters should be enclosed in ** (for example, **word**). Strictly do not use any other kind of formatting.
+      encouraging active participation across various subjects while fostering independent problem-solving skills.
+      Instructions for Output: All bold characters should be enclosed in ** (for example, word). Strictly do not use any other kind of formatting and emojis.
       ''' ,
-
   )
 
   chat_session = model.start_chat(
@@ -53,5 +54,9 @@ while text != "got it":
   text = input("user : ")
   if text == "got it":
     print("Socrates : ", socrates(text= "i have understood thanks for helping"))
+    test1.delete_all_audio_files()
+    
     break
-  print("socrates: ", socrates(text))
+  resp = socrates(text)
+  test1.save_text_to_speech(resp)
+  print(f"Socrates : {resp}")

@@ -4,7 +4,7 @@ Install the Google AI Python SDK
 $ pip install google-generativeai
 """
 
-import os
+
 import google.generativeai as genai
 
 genai.configure(api_key="AIzaSyAuoRViqVlrynAfAOLu725z4MuO45apDos")
