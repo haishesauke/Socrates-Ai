@@ -1,3 +1,8 @@
+'''
+pip install asyncio edge-tts
+
+'''
+
 import asyncio
 import edge_tts
 import os
