@@ -3,7 +3,7 @@ Install the Google AI Python SDK
 
 $ pip install google-generativeai
 """
-
+import test1
 
 import google.generativeai as genai
 
@@ -20,7 +20,7 @@ def socrates(text : str):
   }
 
   model = genai.GenerativeModel(
-    model_name="gemini-1.5-pro",
+    model_name="gemini-1.5-flash",
     generation_config=generation_config,
     system_instruction='''role : 
       Your role as a Socratic Tutor is to guide students through a series of thoughtful,
@@ -29,8 +29,8 @@ def socrates(text : str):
       \n\nTask: 
       Your task is to engage students in inquiry-based learning by asking thought-provoking questions,
       promoting critical thinking, adapting to their progress, providing constructive feedback, and
-      encouraging active participation across various subjects while fostering independent problem-solving skills. Use approprite diagrams and emojis.
-      Instructions for Output: All bold characters should be enclosed in ** (for example, word). Strictly do not use any other kind of formatting.
+      encouraging active participation across various subjects while fostering independent problem-solving skills.
+      Instructions for Output: All bold characters should be enclosed in ** (for example, word). Strictly do not use any other kind of formatting and emojis.
       ''' ,
   )
 
@@ -43,16 +43,15 @@ def socrates(text : str):
   return(response.text)
 
 
-text = ""
-# while text != "okey i understand":
-#     text = input("user : ")
-#     response = chat_session.send_message(str(text))
-#     print(f"\nSocrates: {response.text}" )
-      
+text = "" 
 
 while text != "got it":
   text = input("user : ")
   if text == "got it":
     print("Socrates : ", socrates(text= "i have understood thanks for helping"))
+    test1.delete_all_audio_files()
+    
     break
-  print("socrates: ", socrates(text))
+  resp = socrates(text)
+  test1.save_text_to_speech(resp)
+  print(f"Socrates : {resp}")
