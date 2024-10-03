@@ -1,12 +1,7 @@
-'''
-pip install asyncio edge-tts
-
-'''
-
 import asyncio
 import edge_tts
 import os
-## aarjav and Karan please try en-US-AnaNeural as voice here P.S. recommanded
+
 def save_text_to_speech(text, voice="en-US-GuyNeural", filename="output.mp3", folder="audio"):
     if not os.path.exists(folder):
         os.makedirs(folder)
@@ -16,23 +11,25 @@ def save_text_to_speech(text, voice="en-US-GuyNeural", filename="output.mp3", fo
         communicate = edge_tts.Communicate(text, voice)
         await communicate.save(output_file)
 
-    loop = asyncio.get_event_loop_policy().get_event_loop()
+    # Create a new event loop if one doesn't exist
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError as e:
+        if str(e) == 'There is no current event loop in thread':
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
     
     loop.run_until_complete(amain())
     print(f"Audio saved to {output_file}")
 
-# voice options:
-# cute : en-US-AnaNeural
-# friendly male : en-US-GuyNeural
-
-def delete_all_audio_files(folder_path = "/workspaces/Socrates-Ai/audio"):
+def delete_all_audio_files(folder_path="audio"):
     try:
         for file_name in os.listdir(folder_path):
             file_path = os.path.join(folder_path, file_name)
             if file_name.endswith('.mp3'):
                 os.remove(file_path)
                 print(f"Deleted: {file_name}")
-        print("all audio files deleted successfully")
+        print("All audio files deleted successfully")
     
     except Exception as e:
         print(f"Error: {e}")
